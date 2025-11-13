@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HarmonyWave - Premium Music Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+        }
+
+        .background-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #FF0080, #7928CA, #FF0080);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .language-selector {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .language-selector:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            gap: 20px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .player-area {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .album-art {
+            width: 350px;
+            height: 350px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .song-info {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .song-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .song-artist {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #fff, #f0f0f0);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .control-btn.play {
+            width: 80px;
+            height: 80px;
+            font-size: 32px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+        }
+
+        .playlist {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .playlist-title {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .playlist-item {
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .feature-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            color: white;
+            font-size: 12px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-gradient"></div>
+    
+    <div class="container">
+        <div class="header">
+            <div class="logo">🎵 HarmonyWave</div>
+            <select class="language-selector" id="langSelector">
+                <option value="pt">Português</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="it">Italiano</option>
+                <option value="ja">日本語</option>
+                <option value="zh">中文</option>
+                <option value="ar">العربية</option>
+                <option value="ru">Русский</option>
+            </select>
+        </div>
+
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="menu-item">🏠 <span data-lang="home">Início</span></div>
+                <div class="menu-item">🔍 <span data-lang="search">Pesquisar</span></div>
+                <div class="menu-item">📚 <span data-lang="library">Biblioteca</span></div>
+                <div class="menu-item">➕ <span data-lang="create">Criar Playlist</span></div>
+                <div class="menu-item">❤️ <span data-lang="liked">Músicas Curtidas</span></div>
+                <div class="menu-item">🎧 <span data-lang="podcasts">Podcasts</span></div>
+                <div class="menu-item">⚙️ <span data-lang="settings">Configurações</span></div>
+            </div>
+
+            <div class="player-area">
+                <div class="feature-badge" data-lang="premium">Premium Experience</div>
+                <div class="album-art">🎵</div>
+                <div class="song-info">
+                    <div class="song-title" data-lang="songTitle">Melodia dos Sonhos</div>
+                    <div class="song-artist" data-lang="artist">Artista Extraordinário</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="controls">
+                    <button class="control-btn">🔀</button>
+                    <button class="control-btn">⏮️</button>
+                    <button class="control-btn play" id="playBtn">▶️</button>
+                    <button class="control-btn">⏭️</button>
+                    <button class="control-btn">🔁</button>
+                </div>
+            </div>
+
+            <div class="playlist">
+                <div class="playlist-title" data-lang="queue">Fila de Reprodução</div>
+                <div class="playlist-item">
+                    <div><strong>Sonata da Noite</strong></div>
+                    <div style="opacity: 0.7; font-size: 14px;">Compositor Místico</div>
+                </div>
+                <div class="playlist-item">
+                    <div><strong>Ritmo do Coração</strong></div>
+                    <div style="opacity: 0.7; font-size: 14px;">Banda Virtual</div>
+                </div>
+                <div class="playlist-item">
+                    <div><strong>Ecos do Infinito</strong></div>
+                    <div style="opacity: 0.7; font-size: 14px;">Orquestra Digital</div>
+                </div>
+                <div class="playlist-item">
+                    <div><strong>Dança das Estrelas</strong></div>
+                    <div style="opacity: 0.7; font-size: 14px;">DJ Cosmos</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="watermark">See Jordan</div>
+
+    <script>
+        const translations = {
+            pt: {
+                home: 'Início',
+                search: 'Pesquisar',
+                library: 'Biblioteca',
+                create: 'Criar Playlist',
+                liked: 'Músicas Curtidas',
+                podcasts: 'Podcasts',
+                settings: 'Configurações',
+                premium: 'Experiência Premium',
+                songTitle: 'Melodia dos Sonhos',
+                artist: 'Artista Extraordinário',
+                queue: 'Fila de Reprodução'
+            },
+            en: {
+                home: 'Home',
+                search: 'Search',
+                library: 'Library',
+                create: 'Create Playlist',
+                liked: 'Liked Songs',
+                podcasts: 'Podcasts',
+                settings: 'Settings',
+                premium: 'Premium Experience',
+                songTitle: 'Dream Melody',
+                artist: 'Extraordinary Artist',
+                queue: 'Queue'
+            },
+            es: {
+                home: 'Inicio',
+                search: 'Buscar',
+                library: 'Biblioteca',
+                create: 'Crear Lista',
+                liked: 'Canciones Favoritas',
+                podcasts: 'Podcasts',
+                settings: 'Configuración',
+                premium: 'Experiencia Premium',
+                songTitle: 'Melodía de Sueños',
+                artist: 'Artista Extraordinario',
+                queue: 'Cola'
+            },
+            fr: {
+                home: 'Accueil',
+                search: 'Rechercher',
+                library: 'Bibliothèque',
+                create: 'Créer Playlist',
+                liked: 'Chansons Aimées',
+                podcasts: 'Podcasts',
+                settings: 'Paramètres',
+                premium: 'Expérience Premium',
+                songTitle: 'Mélodie des Rêves',
+                artist: 'Artiste Extraordinaire',
+                queue: 'File d\'attente'
+            },
+            de: {
+                home: 'Startseite',
+                search: 'Suchen',
+                library: 'Bibliothek',
+                create: 'Playlist Erstellen',
+                liked: 'Geliebte Lieder',
+                podcasts: 'Podcasts',
+                settings: 'Einstellungen',
+                premium: 'Premium Erlebnis',
+                songTitle: 'Traummelodie',
+                artist: 'Außergewöhnlicher Künstler',
+                queue: 'Warteschlange'
+            },
+            it: {
+                home: 'Home',
+                search: 'Cerca',
+                library: 'Biblioteca',
+                create: 'Crea Playlist',
+                liked: 'Brani Preferiti',
+                podcasts: 'Podcast',
+                settings: 'Impostazioni',
+                premium: 'Esperienza Premium',
+                songTitle: 'Melodia dei Sogni',
+                artist: 'Artista Straordinario',
+                queue: 'Coda'
+            },
+            ja: {
+                home: 'ホーム',
+                search: '検索',
+                library: 'ライブラリ',
+                create: 'プレイリスト作成',
+                liked: 'お気に入りの曲',
+                podcasts: 'ポッドキャスト',
+                settings: '設定',
+                premium: 'プレミアム体験',
+                songTitle: '夢のメロディー',
+                artist: '素晴らしいアーティスト',
+                queue: 'キュー'
+            },
+            zh: {
+                home: '首页',
+                search: '搜索',
+                library: '音乐库',
+                create: '创建播放列表',
+                liked: '喜欢的歌曲',
+                podcasts: '播客',
+                settings: '设置',
+                premium: '高级体验',
+                songTitle: '梦之旋律',
+                artist: '非凡艺术家',
+                queue: '播放队列'
+            },
+            ar: {
+                home: 'الرئيسية',
+                search: 'بحث',
+                library: 'المكتبة',
+                create: 'إنشاء قائمة',
+                liked: 'الأغاني المفضلة',
+                podcasts: 'البودكاست',
+                settings: 'الإعدادات',
+                premium: 'تجربة مميزة',
+                songTitle: 'لحن الأحلام',
+                artist: 'فنان استثنائي',
+                queue: 'قائمة الانتظار'
+            },
+            ru: {
+                home: 'Главная',
+                search: 'Поиск',
+                library: 'Библиотека',
+                create: 'Создать Плейлист',
+                liked: 'Любимые Песни',
+                podcasts: 'Подкасты',
+                settings: 'Настройки',
+                premium: 'Премиум Опыт',
+                songTitle: 'Мелодия Мечты',
+                artist: 'Выдающийся Артист',
+                queue: 'Очередь'
+            }
+        };
+
+        const langSelector = document.getElementById('langSelector');
+        const playBtn = document.getElementById('playBtn');
+        const progress = document.getElementById('progress');
+        let isPlaying = false;
+        let progressValue = 0;
+
+        langSelector.addEventListener('change', (e) => {
+            const lang = e.target.value;
+            const elements = document.querySelectorAll('[data-lang]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+        });
+
+        playBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            playBtn.textContent = isPlaying ? '⏸️' : '▶️';
+        });
+
+        setInterval(() => {
+            if (isPlaying) {
+                progressValue += 0.5;
+                if (progressValue > 100) progressValue = 0;
+                progress.style.width = progressValue + '%';
+            }
+        }, 100);
+
+        // Dynamic gradient colors
+        const gradients = [
+            'linear-gradient(45deg, #FF0080, #7928CA, #FF0080)',
+            'linear-gradient(45deg, #00F260, #0575E6, #00F260)',
+            'linear-gradient(45deg, #FF416C, #FF4B2B, #FF416C)',
+            'linear-gradient(45deg, #4776E6, #8E54E9, #4776E6)',
+            'linear-gradient(45deg, #000000, #434343, #000000)',
+            'linear-gradient(45deg, #8E2DE2, #4A00E0, #8E2DE2)',
+            'linear-gradient(45deg, #FFD700, #FFA500, #FFD700)',
+            'linear-gradient(45deg, #FF00FF, #00FFFF, #FF00FF)'
+        ];
+
+        let currentGradient = 0;
+        const bgElement = document.querySelector('.background-gradient');
+
+        setInterval(() => {
+            currentGradient = (currentGradient + 1) % gradients.length;
+            bgElement.style.background = gradients[currentGradient];
+        }, 10000);
+    </script>
+</body>
+</html>
